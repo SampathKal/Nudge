@@ -7,7 +7,7 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpcG5tc3FtZXRjZnJqZnV6Z2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMDA0NzYsImV4cCI6MjA5Mzc3NjQ3Nn0.qal2R3ROZKbhS8QTxTk-9iUkNrsKcPePjlhRdL4sRAE"
 );
 
-const GEMINI_KEY = "AIzaSyDxQ3wiF9iolQQ7Mc-3HcrwWn1X7gypVmE";
+const GEMINI_KEY = "AIzaSyDPMxPaaeKiOafZ2DNVv9DvAg3qphfcn1s";
 
 const LogoMark = () => (
   <div className="logo-mark">
@@ -192,8 +192,9 @@ Return ONLY a JSON array, no markdown, no explanation. Format:
       await supabase.from("sessions").update({ quiz: quizData }).eq("id", roomCode);
       setQuiz(quizData);
     } catch (e) {
-      alert("Couldn't generate quiz. Try again!");
-    }
+  console.log("Quiz error:", e);
+  alert("Couldn't generate quiz. Try again!");
+}
     setQuizLoading(false);
   };
 
