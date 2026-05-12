@@ -54,6 +54,7 @@ export default function App() {
   const [alreadyVoted, setAlreadyVoted] = useState(false);
   const [quiz, setQuiz] = useState(null);
   const [quizLoading, setQuizLoading] = useState(false);
+  const [quizContext, setQuizContext] = useState("");
   const [quizAnswers, setQuizAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [quizResults, setQuizResults] = useState(null);
@@ -170,7 +171,11 @@ export default function App() {
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `Generate exactly 3 multiple choice quiz questions to check student understanding of: "${topic}".
+                text: `Generate exactly 3 multiple choice quiz questions based on the following.
+
+Topic: "${topic}"
+${quizContext ? `\nContent to base questions on:\n${quizContext}` : ""}
+
 Return ONLY a JSON array, no markdown, no explanation. Format:
 [
   {
@@ -192,9 +197,9 @@ Return ONLY a JSON array, no markdown, no explanation. Format:
       await supabase.from("sessions").update({ quiz: quizData }).eq("id", roomCode);
       setQuiz(quizData);
     } catch (e) {
-  console.log("Quiz error:", e);
-  alert("Couldn't generate quiz. Try again!");
-}
+      console.log("Quiz error:", e);
+      alert("Couldn't generate quiz. Try again!");
+    }
     setQuizLoading(false);
   };
 
@@ -318,7 +323,9 @@ Return ONLY a JSON array, no markdown, no explanation. Format:
 
             <div className="card glass">
               <p className="t-label" style={{ marginBottom: 8 }}>Re-check quiz</p>
-              <p className="t-sub" style={{ fontSize: 13, marginBottom: 16 }}>Launch a 3-question AI quiz — students answer right inside Nudge, no switching tabs.</p>
+              <p className="t-sub" style={{ fontSize: 13, marginBottom: 16 }}>
+                Paste your notes or assignment text and Nudge will generate 3 questions from it. Students answer right inside the app.
+              </p>
               {quiz && quiz.active ? (
                 <div>
                   <div className="ai-badge" style={{ marginBottom: 12 }}>✦ Quiz Live</div>
@@ -334,9 +341,18 @@ Return ONLY a JSON array, no markdown, no explanation. Format:
                   }}>End Quiz</button>
                 </div>
               ) : (
-                <button className="btn btn-glow" onClick={generateQuiz} disabled={quizLoading}>
-                  {quizLoading ? "Generating..." : "✦ Generate AI Quiz"}
-                </button>
+                <>
+                  <textarea
+                    className="input textarea"
+                    placeholder="Paste your notes, assignment text, or anything you want the quiz to be based on... (optional — leave blank to use the topic)"
+                    value={quizContext}
+                    onChange={e => setQuizContext(e.target.value)}
+                    style={{ marginBottom: 12 }}
+                  />
+                  <button className="btn btn-glow" onClick={generateQuiz} disabled={quizLoading}>
+                    {quizLoading ? "Generating..." : "✦ Generate AI Quiz"}
+                  </button>
+                </>
               )}
             </div>
 
