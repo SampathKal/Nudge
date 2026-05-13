@@ -7,7 +7,7 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNpcG5tc3FtZXRjZnJqZnV6Z2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMDA0NzYsImV4cCI6MjA5Mzc3NjQ3Nn0.qal2R3ROZKbhS8QTxTk-9iUkNrsKcPePjlhRdL4sRAE"
 );
 
-const GEMINI_KEY = "AIzaSyDPMxPaaeKiOafZ2DNVv9DvAg3qphfcn1s";
+const GEMINI_KEY = "AIzaSyAHcI4sYJltlFUHyuWEj96HQ9iz7pcmoLU";
 
 const LogoMark = () => (
   <div className="logo-mark">
